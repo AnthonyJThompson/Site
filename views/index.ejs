@@ -1,0 +1,30 @@
+    <style>
+      .closed-auction {
+        background-color: gray;
+      }
+    </style>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <% if (blogs.length > 0) { for (var i = 0; i < blogs.length; i++) { %>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= blogs[i].title %></h5>
+              <p class="card-text">
+                <%= blogs[i].content %>
+              </p>
+            </div>
+          </div>
+        <% } } else { %>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nothing?</h5>
+              <p class="card-text">
+                How could there be nothing?
+              </p>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
