@@ -5,6 +5,7 @@
 
 .site-link {
     cursor: pointer;
+    user-select: none;
 }
 
 .site-link:hover {
@@ -13,6 +14,7 @@
 
 #loader {
     position: absolute;
+    display: none;
     right: 10%;
     bottom: 10%;
     z-index: 1;

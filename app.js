@@ -27,7 +27,7 @@ app.use('/player', playerRouter);
 
 app.use('*', function(req, res, next) {
   if (req.xhr) {
-    console.log(req.xhr);
+    console.log(req.originalUrl);
     next();
   }
   else {
