@@ -6,7 +6,8 @@ var logger = require('morgan');
 var partials = require('express-partials');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var playerRouter = require('./routes/player');
+var characterRouter = require('./routes/character');
 
 var app = express();
 
@@ -22,7 +23,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/player', playerRouter);
+
+app.use('*', function(req, res, next) {
+  if (req.xhr) {
+    console.log(req.xhr);
+    next();
+  }
+  else {
+    res.redirect('/');
+  }
+})
+
+app.use('/character', characterRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,140 @@
+<style>
+html { background: #383B44; }
+
+.jAudio, .jAudio * { padding: 0; margin: 0; box-sizing: border-box; outline: none; font-family: "Open Sans"; color: #000; font-weight: 100; }
+
+.jAudio { display: table; overflow: hidden; box-shadow: 0 0 5px rgba(0, 0, 0, 0.8); width: 100%; height: 100%; }
+.jAudio:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--ui { position: relative; width: 100%; height: 35%; }
+.jAudio--status-bar { width: 100%; z-index: 1; position: relative; padding: 10px 1rem 10px 1rem; }
+.jAudio--status-bar:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--controls { width: 100%; background: #061317d9; margin: -8px; bottom: 8; position: absolute; }
+.jAudio--controls:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--controls ul { display: table; overflow: hidden; width: 100%; }
+.jAudio--controls ul:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--controls li { position: relative; width: 33.3333%; height: 5rem; line-height: 5rem; float: left; list-style: none; }
+.jAudio--control { background: transparent; border: 0; }
+.jAudio--control span { height: 15px; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); overflow: hidden; }
+.jAudio--control span:before, .jAudio--control span:after { display: block; content: " "; height: 0; float: left; border-color: transparent; border-style: solid; }
+.jAudio--control-prev span:before, .jAudio--control-prev span:after, .jAudio--control-next span:before, .jAudio--control-next span:after, .jAudio--control-play span:before, .jAudio--control-play span:after { border-top: 7.5px solid transparent; border-bottom: 7.5px solid transparent; }
+.jAudio--control-prev span:before, .jAudio--control-prev span:after { border-right: 15px solid #ddd; border-left: 0; }
+.jAudio--control-prev:active span:before, .jAudio--control-prev:active span:after { border-right-color: #FF6666 !important; }
+.jAudio--control-next span:before, .jAudio--control-next span:after { border-left: 15px solid #ddd; border-right: 0; }
+.jAudio--control-next:active span:before, .jAudio--control-next:active span:after { border-left-color: #FF6666 !important; }
+.jAudio--control-play span:before { border-left: 15px solid #ddd; border-right: 0; }
+.jAudio--control-play span:after { display: none; }
+.jAudio--control-play:active span:before, .jAudio--control-play.active span:before { border-left-color: #FF6666 !important; }
+.jAudio--control-pause span:before, .jAudio--control-pause span:after { width: 5px; height: 15px; background: #FF6666; border: 0; }
+.jAudio--control-pause span:before { margin-right: 5px; }
+.jAudio--control-pause span:active:before, .jAudio--control-pause span:active:after, .jAudio--control-pause span.active:before, .jAudio--control-pause span.active:after { background: #fff; margin-right: 5px; }
+.jAudio--thumb { z-index: -1; position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-size: cover; background-position: center center; }
+.jAudio--time { display: table; width: 100%; padding: 5px; }
+.jAudio--time:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--time * { width: 50%; display: block; float: left; color: #fff; text-shadow: 0 1px 1px #000; font-size: 0.9rem; }
+.jAudio--time-elapsed { text-align: left; }
+.jAudio--time-total { text-align: right; }
+.jAudio--details * { color: #fff; text-shadow: 0 1px 1px #000; font-size: 1.2rem; }
+.jAudio--details *:first-of-type { font-weight: bold; }
+.jAudio--details p { width: 100%; }
+.jAudio--details p span { display: block; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jAudio--progress-bar { margin: .6rem 0; flex-grow: 1; }
+.jAudio--progress-bar-wrapper { width: 100%; position: relative; background: rgba(255, 255, 255, 0.3); cursor: pointer; border-radius: 10px; overflow: hidden; }
+.jAudio--progress-bar-played { height: 10px; background: #FF6666; position: relative; border-radius: 10px; }
+.jAudio--progress-bar-pointer { height: 10px; width: 10px; border-radius: 50%; position: absolute; right: 0; background: #fff; }
+.jAudio--playlist { background: #ffffffe3; height: 100%; overflow: scroll; overflow-x: hidden; padding-bottom: 100px;}
+.jAudio--playlist-item { display: block; width: 100%; padding: 1.33333rem 2rem; display: table; }
+.jAudio--playlist-item:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--playlist-item.active { background: #f55c5c; border-bottom-color: #f55c5c; }
+.jAudio--playlist-item.active * { color: #fff; }
+.jAudio--playlist-item:not(.active):hover { background: #fafafa; }
+.jAudio--playlist-item:last-of-type { border: 0; margin-bottom: 0; }
+.jAudio--playlist-thumb { float: left; margin-right: 0.5rem; display: table; }
+.jAudio--playlist-thumb:after { content: " "; display: block; width: 100%; clear: both; }
+.jAudio--playlist-thumb img { height: 2.4rem; width: 2.4rem; border-radius: 50%; float: left; margin-right: 0.5rem; }
+.jAudio--playlist-meta-track-name { font-size: 1rem; color: #000; font-weight: bold; }
+.jAudio--playlist-meta-track-artist { font-size: 0.8rem; }
+
+.jAudio--controls li button span:before, .jAudio--controls li button span:after { -webkit-transition: border-color 0.3s ease 0s; transition: border-color 0.3s ease 0s; }
+.jAudio--thumb { -webkit-transition: all 0.5s ease 0s; transition: all 0.5s ease 0s; }
+.jAudio--progress-bar-played { -webkit-transition: all 0.2s ease 0s; transition: all 0.2s ease 0s; }
+.jAudio--playlist-item { -webkit-transition: all 0.5s ease 0s; transition: all 0.5s ease 0s; }
+.jAudio--playlist-item * { -webkit-transition: all 0.3s ease 0s; transition: all 0.3s ease 0s; }
+
+.audio-controls { display: flex; align-items: center;}
+.audio-playpause-container { width: 40px; padding: 10px;}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<div class="jAudio">
+    <div class="jAudio--thumb"></div>
+    <audio></audio>
+    <div class="jAudio--playlist"></div>
+    <div class="jAudio--controls">
+        <div class="jAudio--ui">
+            <div class="jAudio--status-bar">  
+                <div class="jAudio--details"></div>
+                <div class="audio-controls">
+                    <div class="audio-playpause-container">
+                        <button class='jAudio--control jAudio--control-play' data-action='play'><span></span></button>
+                    </div>
+                    <div class="jAudio--progress-bar">
+                        <div class="jAudio--progress-bar-wrapper">
+                            <div class="jAudio--progress-bar-played">
+                                <span class="jAudio--progress-bar-pointer"></span>
+                            </div>
+                        </div>
+                        <div class="jAudio--time">
+                            <span class="jAudio--time-elapsed">00:00</span>
+                            <span class="jAudio--time-total">00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+
+<div id="channel-select">
+    <div class="card" onclick="load('http://feeds.feedburner.com/TheLastPodcastOnTheLeft');">
+    <img src="https://content.production.cdn.art19.com/images/b9/2b/fa/f0/b92bfaf0-a12d-4647-8b6e-e804bc28ecbc/ad6ccdb43c2895133b4478aaaca72ab2123fddf3f2194b6db15e17062c851054937a8565a019674a8c33980d3d7a540ff1c37039b7616501fbbb9e3d64b257ad.jpeg" style="width:100%">
+    <div class="container">
+        <p>Last Podcast on the Left</p> 
+    </div>
+    </div>
+    <button onclick="load('http://adventurezone.libsyn.com/rss');">Adventure Zone</button>
+    <button onclick="load('https://audioboom.com/channels/4878185.rss');">??</button>
+    
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://ajmain.blob.core.windows.net/main/jaudio.js"></script>
+
+<script>
+    
+
+    $(".jAudio").hide();
+    $("#channel-select").show();
+
+    function load(url) {
+
+        var encoded = encodeURIComponent(url);
+        $.ajax('/player/api/parseurl?url=' + encoded, {
+            dataType:"json",
+            success:function(data) {
+                
+                var t = {
+                    playlist: data
+                }
+                $(".jAudio").jAudio(t);
+                $(".jAudio").show();
+                $("#channel-select").hide();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+    //load("http://feeds.feedburner.com/TheLastPodcastOnTheLeft");
+    //load("https://adventurezone.libsyn.com/rss");
+</script>

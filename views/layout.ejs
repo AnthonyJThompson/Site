@@ -7,6 +7,7 @@
 
   <title><%= (typeof title != "undefined" ? title : "") %></title>
 
+  <link rel="stylesheet" href="css/style.css">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <!-- Theme style -->
@@ -214,8 +215,9 @@
           </div>
           <!-- Main content -->
           <div class="content">
-            <div class="container-fluid">
-
+            <div id="loader"></div>
+            <div id="content-wrapper" class="container-fluid">
+              
 <%- body %>
 
             </div>
@@ -238,7 +240,7 @@
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2018 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2014-2018.</strong> All rights reserved.
   </footer>
 
   <!-- jQuery -->
@@ -247,4 +249,40 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="js/adminlte.min.js"></script>
+
+  <script>
+    var loading;
+    $("#loader").hide();
+    jQuery.ajaxSetup({
+        beforeSend: function() {
+          if (!loading)
+          loading = setTimeout("$('#loader').fadeIn()", 500);
+        },
+        complete: function(){
+          clearTimeout(loading);
+          $("#loader").fadeOut();   
+        },
+        success: function() {
+          clearTimeout(loading);
+          $("#loader").fadeOut();   
+        }
+    });
+
+    $(document).on('click', '.site-link', function(e) {
+      pageUrl = $(this).data('route');
+      e.preventDefault();
+      console.log('link clicked: ' + pageUrl);
+      $.ajax({
+        url: pageUrl, 
+        success: function(data) {
+          $('#content-wrapper').html(data);
+          window.history.replaceState({"html":data,"pageTitle": pageUrl},"", "/");          
+        },
+        error: function(err) {
+          console.log(err);
+          //$('#loader').hide();
+        }
+      });
+    });
+  </script>
 </html>
