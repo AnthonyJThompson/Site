@@ -5,9 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var partials = require('express-partials');
 
-var indexRouter = require('./routes/index');
-var playerRouter = require('./routes/player');
-var characterRouter = require('./routes/character');
+var index = require('./routes/index');
+var player = require('./routes/player');
+var character = require('./routes/character');
+var actions = require('./routes/actions');
 
 var app = express();
 
@@ -22,8 +23,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/player', playerRouter);
+app.use('/', index);
+app.use('/player', player);
 
 app.use('*', function(req, res, next) {
   if (req.xhr) {
@@ -35,8 +36,8 @@ app.use('*', function(req, res, next) {
   }
 })
 
-app.use('/character', characterRouter);
-
+app.use('/character', character);
+app.use('/actions', actions);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
