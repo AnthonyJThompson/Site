@@ -1,9 +1,11 @@
 var mysql = require('mysql');
-var connection = mysql.createConnection({
-    host     : 'localhost',
+var connectionpool = mysql.createPool({
+    host     : 'ajthings.com',
     user     : 'testuser',
     password : 'test1234',
     database : 'testdb'
 });
 
-exports = connection;
+exports.get = function (callback) {
+    connectionpool.getConnection(callback);
+};

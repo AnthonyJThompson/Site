@@ -1,31 +1,3 @@
-$(window).bind('orientationchange resize', function (event) {
-    if (event.orientation) {
-        if (event.orientation == 'landscape') {
-            if (window.rotation == 90) {
-                rotate(this, -90);
-            } else {
-                rotate(this, 90);
-            }
-        }
-    }
-});
-
-function rotate(el, degs) {
-    iedegs = degs / 90;
-    if (iedegs < 0) iedegs += 4;
-    transform = 'rotate(' + degs + 'deg)';
-    iefilter = 'progid:DXImageTransform.Microsoft.BasicImage(rotation=' + iedegs + ')';
-    styles = {
-        transform: transform,
-        '-webkit-transform': transform,
-        '-moz-transform': transform,
-        '-o-transform': transform,
-        filter: iefilter,
-        '-ms-filter': iefilter
-    };
-    $(el).css(styles);
-}
-
 var loading;
 jQuery.ajaxSetup({
     beforeSend: function () {
@@ -43,18 +15,44 @@ jQuery.ajaxSetup({
     }
 });
 
+
+function load(url, element) {
+    $.ajax({
+        url: url,
+        success: function (data) {
+            $(element).html(data);
+            window.history.replaceState({ "html": data, "pageTitle": url }, "", "/");
+        },
+        error: function (err) {
+            console.log(err.responseText);
+            //$(element).html(err.responseText);
+        }
+    });
+}
+function add(url, json) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: json,
+        dataType: "json",
+        success: function (data) {
+            console.log('added');
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
+}
+
+function init() {
+    load('/tasks', '#tasks-wrapper');
+}
+
 $(document).on('click', '.site-link', function (e) {
     pageUrl = $(this).data('route');
     e.preventDefault();
     console.log('link clicked: ' + pageUrl);
-    $.ajax({
-        url: pageUrl,
-        success: function (data) {
-            $('#content-wrapper').html(data);
-            window.history.replaceState({ "html": data, "pageTitle": pageUrl }, "", "/");
-        },
-        error: function (err) {
-            console.log(err.responseText);
-        }
-    });
+    load(pageUrl, '#content-wrapper');
 });
+
+init();

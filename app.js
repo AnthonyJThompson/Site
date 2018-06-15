@@ -8,7 +8,7 @@ var partials = require('express-partials');
 var index = require('./routes/index');
 var player = require('./routes/player');
 var character = require('./routes/character');
-var actions = require('./routes/actions');
+var tasks = require('./routes/tasks');
 
 var app = express();
 
@@ -37,7 +37,7 @@ app.use('*', function(req, res, next) {
 })
 
 app.use('/character', character);
-app.use('/actions', actions);
+app.use('/tasks', tasks);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
